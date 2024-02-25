@@ -72,17 +72,43 @@ router.post('/signin', (req, res) => {
     }
 });
 
-router.route('/testcollection')
-    .delete(authController.isAuthenticated, (req, res) => {
-        console.log(req.body);
-        res = res.status(200);
-        if (req.get('Content-Type')) {
-            res = res.type(req.get('Content-Type'));
-        }
+// router.route('/testcollection')
+//     .delete(authController.isAuthenticated, (req, res) => {
+//         console.log(req.body);
+//         res = res.status(200);
+//         if (req.get('Content-Type')) {
+//             res = res.type(req.get('Content-Type'));
+//         }
+//         var o = getJSONObjectForMovieRequirement(req);
+//         res.json(o);
+//     }
+//     )
+//     .put(authJwtController.isAuthenticated, (req, res) => {
+//         console.log(req.body);
+//         res = res.status(200);
+//         if (req.get('Content-Type')) {
+//             res = res.type(req.get('Content-Type'));
+//         }
+//         var o = getJSONObjectForMovieRequirement(req);
+//         res.json(o);
+//     }
+//     );
+
+    router.route('/movies')
+    .get((req, res) => {
         var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "GET movies";
+        o.query = req.query;
         res.json(o);
-    }
-    )
+    })
+    .post((req, res) => {
+        var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "movie saved";
+        o.query = req.query;
+        res.json(o);
+    })
     .put(authJwtController.isAuthenticated, (req, res) => {
         console.log(req.body);
         res = res.status(200);
@@ -90,9 +116,26 @@ router.route('/testcollection')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "movie updated";
         res.json(o);
-    }
-    );
+    })
+    .delete(authController.isAuthenticated, (req, res) => {
+        console.log(req.body);
+        res = res.status(200);
+        if (req.get('Content-Type')) {
+            res = res.type(req.get('Content-Type'));
+        }
+        var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "movie deleted";
+        res.json(o);
+    })
+    .all((req, res) => {
+        // Any other HTTP Method
+        // Returns a message stating that the HTTP method is unsupported.
+        res.status(405).send({ message: 'HTTP method not supported.' });
+    });
     
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
