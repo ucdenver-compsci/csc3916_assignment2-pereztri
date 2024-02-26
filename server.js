@@ -110,6 +110,9 @@ router.route('/testcollection')
         res.json(o);
     })
     .put(authJwtController.isAuthenticated, (req, res) => {
+        // HTTP PUT Method
+        // Requires JWT authentication.
+        // Returns a JSON object with status, message, headers, query, and env.
         console.log(req.body);
         res = res.status(200);
         if (req.get('Content-Type')) {
@@ -121,6 +124,9 @@ router.route('/testcollection')
         res.json(o);
     })
     .delete(authController.isAuthenticated, (req, res) => {
+        // HTTP DELETE Method
+        // Requires Basic authentication.
+        // Returns a JSON object with status, message, headers, query, and env.
         console.log(req.body);
         res = res.status(200);
         if (req.get('Content-Type')) {
